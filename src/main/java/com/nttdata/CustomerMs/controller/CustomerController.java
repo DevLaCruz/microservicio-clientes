@@ -1,6 +1,6 @@
 package com.nttdata.CustomerMs.controller;
 
-import com.nttdata.customerms.api.ClientesApiDelegate;
+import com.nttdata.customerms.api.CustomersApiDelegate;
 import com.nttdata.CustomerMs.model.ClienteEntity;
 import com.nttdata.CustomerMs.service.ClienteService;
 import com.nttdata.customerms.model.Cliente;
@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("cliente")
-public class CustomerController implements ClientesApiDelegate {
+@RequestMapping("clientes")
+public class CustomerController implements CustomersApiDelegate {
 
     @Autowired
     private ClienteService clienteService;
@@ -29,10 +29,14 @@ public class CustomerController implements ClientesApiDelegate {
 
     @Override
     @GetMapping
-    public ResponseEntity<List<ClienteEntity>> listarClientes() {
-        List<ClienteEntity> clientesEntity = clienteService.listarClientes();
-        return ResponseEntity.ok(clientesEntity);
+    public ResponseEntity<List<Cliente>> listarClientes() {
+        List<ClienteEntity> clientesEntities = clienteService.listarClientes();
+        List<Cliente> clientes = clientesEntities.stream()
+                .map(clienteService::convertirACliente)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(clientes);
     }
+
 
     @Override
     @GetMapping("/{id}")

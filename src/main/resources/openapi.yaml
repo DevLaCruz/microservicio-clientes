@@ -7,7 +7,7 @@ servers:
   - url: http://localhost:8080
     description: Servidor local de desarrollo
 paths:
-  /clientes:
+  /customers:
     post:
       summary: Crear un nuevo cliente
       operationId: crearCliente
@@ -34,7 +34,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Cliente'
-  /clientes/{id}:
+  /customers/{id}:
     get:
       summary: Obtener detalles de un cliente
       operationId: obtenerCliente
