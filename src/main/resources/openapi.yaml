@@ -1,0 +1,114 @@
+openapi: 3.0.0
+info:
+  title: Gestión de Clientes - Banco XYZ
+  version: 1.0.0
+  description: API para gestionar clientes en el banco XYZ
+servers:
+  - url: http://localhost:8080
+    description: Servidor local de desarrollo
+paths:
+  /clientes:
+    post:
+      summary: Crear un nuevo cliente
+      operationId: crearCliente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cliente'
+      responses:
+        '201':
+          description: Cliente creado con éxito
+        '400':
+          description: Error en los datos proporcionados
+    get:
+      summary: Listar todos los clientes
+      operationId: listarClientes
+      responses:
+        '200':
+          description: Lista de todos los clientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cliente'
+  /clientes/{id}:
+    get:
+      summary: Obtener detalles de un cliente
+      operationId: obtenerCliente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalles del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cliente'
+        '404':
+          description: Cliente no encontrado
+    put:
+      summary: Actualizar un cliente existente
+      operationId: actualizarCliente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cliente'
+      responses:
+        '200':
+          description: Cliente actualizado con éxito
+        '404':
+          description: Cliente no encontrado
+    delete:
+      summary: Eliminar un cliente
+      operationId: eliminarCliente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cliente eliminado con éxito
+        '404':
+          description: Cliente no encontrado
+components:
+  schemas:
+    Cliente:
+      type: object
+      required:
+        - nombre
+        - apellido
+        - dni
+      properties:
+        id:
+          type: integer
+          example: 1
+        nombre:
+          type: string
+          example: Juan
+        apellido:
+          type: string
+          example: Pérez
+        dni:
+          type: string
+          example: 12345678
+        email:
+          type: string
+          format: email
+          example: juan.perez@example.com
