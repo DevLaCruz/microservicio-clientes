@@ -13,10 +13,31 @@ import java.util.stream.Collectors;
 public class ClienteService {
 
     @Autowired
+
     private ClienteRepository clienteRepository;
 
     public ClienteEntity crearCliente(ClienteEntity clienteEntity) {
+        validarCliente(clienteEntity); // Llamar al método de validación
         return clienteRepository.save(clienteEntity);
+    }
+
+    // Método para validar DNI y email
+    private void validarCliente(ClienteEntity clienteEntity) {
+        // Validar formato de email
+        if (!esEmailValido(clienteEntity.getEmail())) {
+            throw new RuntimeException("Email no válido");
+        }
+
+        // Validar que el DNI sea único
+        if (clienteRepository.existsByDni(clienteEntity.getDni())) {
+            throw new RuntimeException("DNI ya existe");
+        }
+    }
+
+    // Método para validar el formato de email
+    private boolean esEmailValido(String email) {
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        return email != null && email.matches(emailRegex);
     }
 
     public List<ClienteEntity> listarClientes() {

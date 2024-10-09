@@ -22,9 +22,12 @@ public class CustomerController implements CustomersApiDelegate {
     @Override
     @PostMapping
     public ResponseEntity<Void> crearCliente(@Valid @RequestBody Cliente cliente) {
-        // Crear cliente y no devolver el objeto, solo el estado
-        clienteService.crearCliente(clienteService.convertirAClienteEntity(cliente));
-        return ResponseEntity.status(201).build();
+        try {
+            clienteService.crearCliente(clienteService.convertirAClienteEntity(cliente));
+            return ResponseEntity.status(201).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null); // Devolver un 400 en caso de error
+        }
     }
 
     @Override
