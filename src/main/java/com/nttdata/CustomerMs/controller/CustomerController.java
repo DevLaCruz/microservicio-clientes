@@ -1,9 +1,9 @@
 package com.nttdata.CustomerMs.controller;
 
-import com.nttdata.customerms.api.CustomersApiDelegate;
+import com.nttdata.CustomerMs.api.CustomersApiDelegate;
 import com.nttdata.CustomerMs.model.ClienteEntity;
 import com.nttdata.CustomerMs.service.ClienteService;
-import com.nttdata.customerms.model.Cliente;
+import com.nttdata.CustomerMs.model.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

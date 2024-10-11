@@ -1,7 +1,7 @@
 package com.nttdata.CustomerMs.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nttdata.customerms.model.Cliente;
+import com.nttdata.CustomerMs.model.Cliente;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

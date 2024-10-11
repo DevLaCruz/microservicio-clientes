@@ -3,11 +3,14 @@ package com.nttdata.CustomerMs.service;
 import com.nttdata.CustomerMs.exception.ClienteException;
 import com.nttdata.CustomerMs.model.ClienteEntity;
 import com.nttdata.CustomerMs.repository.ClienteRepository;
-import com.nttdata.customerms.model.Cliente;
+import com.nttdata.CustomerMs.model.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,7 +18,14 @@ public class ClienteService {
 
     @Autowired
 
-    private ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public ClienteService(ClienteRepository clienteRepository, RestTemplate restTemplate) {
+        this.clienteRepository = clienteRepository;
+        this.restTemplate = restTemplate;
+    }
 
     public ClienteEntity crearCliente(ClienteEntity clienteEntity) {
         validarCliente(clienteEntity); // Llamar al método de validación
@@ -58,6 +68,19 @@ public class ClienteService {
 
     public void eliminarCliente(Integer id) {
         ClienteEntity cliente = obtenerCliente(id);
+
+        // Llamar al endpoint que devuelve todas las cuentas
+        String url = "http://localhost:8081/cuentas"; // Ajusta según tu API
+        Map[] cuentas = restTemplate.getForObject(url, Map[].class); // Usando Map para no definir una clase
+
+        // Verificar si el clienteId está presente en alguna cuenta
+        boolean tieneCuentasActivas = Arrays.stream(cuentas)
+                .anyMatch(cuenta -> cliente.getId().equals(cuenta.get("clienteId")));
+
+        if (tieneCuentasActivas) {
+            throw new ClienteException("El cliente tiene cuentas activas y no se puede eliminar");
+        }
+
         clienteRepository.delete(cliente);
     }
 

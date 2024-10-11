@@ -32,6 +32,7 @@ class ClienteServiceTest {
         when(clienteRepository.save(clienteEntity)).thenReturn(clienteEntity);
 
         ClienteEntity result = clienteService.crearCliente(clienteEntity);
+
         assertNotNull(result);
         verify(clienteRepository, times(1)).save(clienteEntity);
     }
