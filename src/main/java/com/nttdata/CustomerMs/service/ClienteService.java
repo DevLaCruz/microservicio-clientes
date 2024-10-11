@@ -1,5 +1,6 @@
 package com.nttdata.CustomerMs.service;
 
+import com.nttdata.CustomerMs.exception.ClienteException;
 import com.nttdata.CustomerMs.model.ClienteEntity;
 import com.nttdata.CustomerMs.repository.ClienteRepository;
 import com.nttdata.customerms.model.Cliente;
@@ -23,16 +24,14 @@ public class ClienteService {
 
     // Método para validar DNI y email
     private void validarCliente(ClienteEntity clienteEntity) {
-        // Validar formato de email
         if (!esEmailValido(clienteEntity.getEmail())) {
-            throw new RuntimeException("Email no válido");
+            throw new ClienteException("Email no válido");
         }
-
-        // Validar que el DNI sea único
         if (clienteRepository.existsByDni(clienteEntity.getDni())) {
-            throw new RuntimeException("DNI ya existe");
+            throw new ClienteException("DNI ya existe");
         }
     }
+
 
     // Método para validar el formato de email
     private boolean esEmailValido(String email) {
