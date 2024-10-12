@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @Service
 public class ClienteService {
@@ -70,10 +70,10 @@ public class ClienteService {
         ClienteEntity cliente = obtenerCliente(id);
 
         // Llamar al endpoint que devuelve todas las cuentas
-        String url = "http://localhost:8081/cuentas"; // Ajusta según tu API
-        Map[] cuentas = restTemplate.getForObject(url, Map[].class); // Usando Map para no definir una clase
+        String url = "http://localhost:8081/cuentas";
+        Map[] cuentas = restTemplate.getForObject(url, Map[].class);
 
-        // Verificar si el clienteId está presente en alguna cuenta
+        // Verificar si el clienteId está en alguna cuenta
         boolean tieneCuentasActivas = Arrays.stream(cuentas)
                 .anyMatch(cuenta -> cliente.getId().equals(cuenta.get("clienteId")));
 
